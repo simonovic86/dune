@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -12,10 +11,12 @@ type ResponseError struct {
 	Message string `json:"message"`
 }
 
+// query handler type
 type QueryHandler struct {
 	db *sql.DB
 }
 
+// constructor
 func NewQueryHandler(e *echo.Echo, db *sql.DB) *QueryHandler {
 	handler := &QueryHandler{
 		db:db,
@@ -24,6 +25,7 @@ func NewQueryHandler(e *echo.Echo, db *sql.DB) *QueryHandler {
 	return handler
 }
 
+// query route
 func (q *QueryHandler) Query(c echo.Context) error {
 	var query Query
 	err := c.Bind(&query)
@@ -42,8 +44,7 @@ func (q *QueryHandler) Query(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	fmt.Println(table)
-	return c.JSON(http.StatusCreated, table)
+	return c.JSON(http.StatusOK, table)
 }
 
 // convert result to JSON table
