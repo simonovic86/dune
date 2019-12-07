@@ -14,5 +14,4 @@
     "initialize": false,
     "script": "blocks.sql"
   }
-
 }
