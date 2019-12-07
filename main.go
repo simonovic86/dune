@@ -75,6 +75,10 @@ func main() {
 	e := echo.New()
 	middL := middleware.InitMiddleware()
 	e.Use(middL.CORS)
+
+	// initialize query endpoint
+	NewQueryHandler(e, dbConn)
+
 	log.Fatal(e.Start(viper.GetString("server.address")))
 }
 

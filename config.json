@@ -11,7 +11,7 @@
     "user": "postgres",
     "pass": "postgres",
     "name": "dune",
-    "initialize": true,
+    "initialize": false,
     "script": "blocks.sql"
   }
 
