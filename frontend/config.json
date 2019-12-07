@@ -1,0 +1,7 @@
+{
+    "apiHost": "http://localhost",
+    "apiPort": "8080",
+    "routes": {
+        "queryRoute": "query"
+    }
+}

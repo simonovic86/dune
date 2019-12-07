@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Query Executor</title>
+</head>
+<body>
+    <label for="queryInput">Query:</label> 
+    <br>
+    <textarea id="queryInput" name="query" cols="60" rows="10" placeholder="SQL Query string..."></textarea>
+    <br>
+    <button id="submitQuery">Execute</button>
+    <br>
+    <br>
+    <div id="results"></div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="script/models/query/query.js"></script>
+    <script src="script/models/query/validate.js"></script>
+    <script src="script/models/query/index.js"></script>
+    <script src="script/interfaces/rest/index.js"></script>
+    <script src="script/interfaces/tableView/index.js"></script>
+
+    <script>
+        $('document').ready(() => {
+            $.getJSON( "config.json", function( config ) {
+                const submitToApi = createSubmitToApi(config);
+
+                const btnSubmitQuery = $('#submitQuery');
+                const txtQueryInput = $('#queryInput');
+
+                async function submitQuery(queryString) {
+                    try {
+                        let query = queryFactory(queryString);
+                        let resultData = await submitToApi(query);
+                        drawTable('results', resultData);
+                    } catch(err) {
+                        alert(err);
+                    }
+                }
+                btnSubmitQuery.click(() => { submitQuery(txtQueryInput.val()) });
+            });
+        });
+    </script>
+</body>
+</html>
