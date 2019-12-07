@@ -1,0 +1,16 @@
+{
+  "debug": true,
+  "server": {
+    "address": ":8080"
+  },
+  "context":{
+    "timeout":2
+  },
+  "database": {
+    "host": "localhost",
+    "user": "postgres",
+    "pass": "postgres",
+    "name": "dune"
+  }
+
+}
