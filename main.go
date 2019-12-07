@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"dune/internal/middleware"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"os"
@@ -73,7 +72,7 @@ func main() {
 	}()
 
 	e := echo.New()
-	middL := middleware.InitMiddleware()
+	middL := InitMiddleware()
 	e.Use(middL.CORS)
 
 	// initialize query endpoint
