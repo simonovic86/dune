@@ -63,7 +63,7 @@ func main() {
 	}()
 
 	e := echo.New()
-	middleware := middleware.InitMiddleware()
-	e.Use(middleware.CORS)
+	middL := middleware.InitMiddleware()
+	e.Use(middL.CORS)
 	log.Fatal(e.Start(viper.GetString("server.address")))
 }
