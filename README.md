@@ -21,11 +21,11 @@ TABLE blocks (
 ```
 ## Project frontend
 
-Simple query
-<img src="./screenshots/simple_query.png"/>
+#### Simple query
+<img src="./screenshots/simple_query.png" width="400"/>
 
-Aggregate query
-<img src="./screenshots/aggregate_query.png"/>
+#### Aggregate query
+<img src="./screenshots/aggregate_query.png" width="400"/>
 
 #### How To Run This Project
 
