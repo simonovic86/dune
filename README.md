@@ -32,7 +32,7 @@ TABLE blocks (
 
 ###### Starting the server
 
-Server configuration is located in the `config.json` file in the root directory. Change the parameters and run following commands:
+Server configuration is located in the `config.json` file in the root directory. In order to create the table BLOCKS and fill with initial data, change the `database.initialize` to `true`. Change the parameters and run following commands:
 
 ```make build```
 
