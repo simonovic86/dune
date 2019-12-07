@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/labstack/echo"
 	"net/http"
-	"reflect"
 )
 
 type ResponseError struct {
@@ -49,39 +48,41 @@ func (q *QueryHandler) Query(c echo.Context) error {
 
 // convert result to JSON table
 func (q *QueryHandler) queryToJson(query string, args ...interface{}) ([]map[string]interface{}, error) {
-	// an array of JSON objects
-	// the map key is the field name
-	var objects []map[string]interface{}
-
 	rows, err := q.db.Query(query, args...)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	for rows.Next() {
-		// figure out what columns were returned
-		// the column names will be the JSON object field keys
-		columns, err := rows.ColumnTypes()
-		if err != nil {
-			return nil, err
-		}
-
-		// Scan needs an array of pointers to the values it is setting
-		// This creates the object and sets the values correctly
-		values := make([]interface{}, len(columns))
-		object := map[string]interface{}{}
-		for i, column := range columns {
-			object[column.Name()] = reflect.New(column.ScanType()).Interface()
-			values[i] = object[column.Name()]
-		}
-
-		err = rows.Scan(values...)
-		if err != nil {
-			return nil, err
-		}
-
-		objects = append(objects, object)
+	columns, err := rows.Columns()
+	if err != nil {
+		return nil, err
 	}
-	return objects, nil
+	count := len(columns)
+	tableData := make([]map[string]interface{}, 0)
+	values := make([]interface{}, count)
+	valuePtrs := make([]interface{}, count)
+	for rows.Next() {
+		for i := 0; i < count; i++ {
+			valuePtrs[i] = &values[i]
+		}
+		err = rows.Scan(valuePtrs...)
+		if err != nil {
+			return nil, err
+		}
+		entry := make(map[string]interface{})
+		for i, col := range columns {
+			var v interface{}
+			val := values[i]
+			b, ok := val.([]byte)
+			if ok {
+				v = string(b)
+			} else {
+				v = val
+			}
+			entry[col] = v
+		}
+		tableData = append(tableData, entry)
+	}
+	return tableData, nil
 }
