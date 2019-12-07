@@ -30,4 +30,14 @@ TABLE blocks (
 #### How To Run This Project
 
 
+###### Starting the server
 
+Server configuration is located in the `config.json` file in the root directory. Change the parameters and run following commands:
+
+```make build```
+
+```./bin/dune```
+
+###### Starting the frontend
+
+Frontend configuration is located in the `frontend/config.json`. Change the parameters and open the `frontend/index.html` in your browser.
