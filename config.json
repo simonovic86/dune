@@ -10,7 +10,9 @@
     "host": "localhost",
     "user": "postgres",
     "pass": "postgres",
-    "name": "dune"
+    "name": "dune",
+    "initialize": true,
+    "script": "blocks.sql"
   }
 
 }

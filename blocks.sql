@@ -1,3 +1,4 @@
+-- name: create-blocks-table
 CREATE TABLE blocks (
     "time" timestamp with time zone NOT NULL,
     number numeric NOT NULL,
@@ -12,7 +13,7 @@ CREATE TABLE blocks (
     size numeric NOT NULL
 );
 
-
+-- name: create-blocks
 INSERT INTO blocks ("time", number, hash, parent_hash, gas_limit, gas_used, miner, difficulty, total_difficulty, nonce, size) VALUES ('2019-11-15 03:32:25+00', 8936177, '\x1fb398f2815800a70556fc68db35fd2c50a2fbd34c8746dc97a4e6356ef59917', '\x0c587e5e4d6d182aa941a7d836e24df7c2d880b85fe4f74f2e673940997d7362', 9932621, 9913891, '\xea674fdde714fd979de3edf0f56aa9716b898ec8', 2462697677709160, 12857050579463682000847, '\x1130004800112f51', 573);
 INSERT INTO blocks ("time", number, hash, parent_hash, gas_limit, gas_used, miner, difficulty, total_difficulty, nonce, size) VALUES ('2019-11-15 03:32:17+00', 8936176, '\x0c587e5e4d6d182aa941a7d836e24df7c2d880b85fe4f74f2e673940997d7362', '\x3490b5ee023cc163981d63dba89305cccbb4b2108961142c4f1977f323a8398b', 9922932, 8817874, '\x829bd824b016326a401d083b33d092293333a830', 2461358403597682, 12857048116766004291687, '\x31f3ed2001592269', 573);
 INSERT INTO blocks ("time", number, hash, parent_hash, gas_limit, gas_used, miner, difficulty, total_difficulty, nonce, size) VALUES ('2019-11-15 03:32:01+00', 8936175, '\x3490b5ee023cc163981d63dba89305cccbb4b2108961142c4f1977f323a8398b', '\x3a1ff9f1bca39297ee46be62e546d6c2ae47a95cd5a9b7c3690da281829ee183', 9913253, 9892422, '\xea674fdde714fd979de3edf0f56aa9716b898ec8', 2461220964644210, 12857045655407600694005, '\x19b4ab980416b0e1', 575);

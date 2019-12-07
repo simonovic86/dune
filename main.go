@@ -7,6 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"os"
 
+	"github.com/gchaincl/dotsql"
 	"github.com/labstack/echo"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
@@ -55,6 +56,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	initDb := viper.GetBool("database.initialize")
+	if initDb {
+		err := initSQL(dbConn)
+		if err != nil {
+			log.Error(err)
+			os.Exit(1)
+		}
+	}
+
 	defer func() {
 		err := dbConn.Close()
 		if err != nil {
@@ -66,4 +76,22 @@ func main() {
 	middL := middleware.InitMiddleware()
 	e.Use(middL.CORS)
 	log.Fatal(e.Start(viper.GetString("server.address")))
+}
+
+// initialize database (create table, insert initial data
+func initSQL(dbConn *sql.DB) error {
+	sqlScript := viper.GetString("database.script")
+	dot, err := dotsql.LoadFromFile(sqlScript)
+	if err != nil {
+		return err
+	}
+	_, err = dot.Exec(dbConn, "create-blocks-table")
+	if err != nil {
+		return err
+	}
+	_, err = dot.Exec(dbConn, "create-blocks")
+	if err != nil {
+		return err
+	}
+	return nil
 }
