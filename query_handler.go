@@ -3,7 +3,9 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"github.com/labstack/echo"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 )
 
@@ -34,6 +36,7 @@ func (q *QueryHandler) Query(c echo.Context) error {
 	}
 
 	if ok, err := query.isSQLValid(); !ok {
+		log.Warn(fmt.Sprintf("query \"%s\" is not valid", query.Query))
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
@@ -44,6 +47,7 @@ func (q *QueryHandler) Query(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+	log.Info(fmt.Sprintf("query \"%s\" executed", query.Query))
 	return c.JSON(http.StatusOK, table)
 }
 
