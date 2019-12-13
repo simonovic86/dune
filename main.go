@@ -3,8 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"os"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gchaincl/dotsql"
 	"github.com/labstack/echo"
@@ -76,7 +77,8 @@ func main() {
 	e.Use(middL.CORS)
 
 	// initialize query endpoint
-	NewQueryHandler(e, dbConn)
+	cache := NewCache(dbConn)
+	NewQueryHandler(e, dbConn, cache)
 
 	log.Fatal(e.Start(viper.GetString("server.address")))
 }

@@ -12,6 +12,7 @@
     "pass": "postgres",
     "name": "dune",
     "initialize": false,
-    "script": "blocks.sql"
+    "script": "blocks.sql",
+    "cache_expiration": 5
   }
 }

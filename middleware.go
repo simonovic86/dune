@@ -14,7 +14,7 @@ func (m *GoMiddleware) CORS(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-// initialize middleware
+// InitMiddleware constructor
 func InitMiddleware() *GoMiddleware {
 	return &GoMiddleware{}
 }

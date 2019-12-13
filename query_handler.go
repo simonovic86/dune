@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
+	"net/http"
+
 	"github.com/labstack/echo"
 	log "github.com/sirupsen/logrus"
-	"net/http"
 )
 
 type ResponseError struct {
@@ -15,13 +17,15 @@ type ResponseError struct {
 
 // query handler type
 type QueryHandler struct {
-	db *sql.DB
+	db    *sql.DB
+	cache *Cache
 }
 
 // constructor
-func NewQueryHandler(e *echo.Echo, db *sql.DB) *QueryHandler {
+func NewQueryHandler(e *echo.Echo, db *sql.DB, cache *Cache) *QueryHandler {
 	handler := &QueryHandler{
-		db:db,
+		db:    db,
+		cache: cache,
 	}
 	e.POST("/query", handler.Query)
 	return handler
@@ -43,11 +47,32 @@ func (q *QueryHandler) Query(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, errors.New("submitted query is not valid"))
 	}
 
+	cached, err := q.cache.Find(context.Background(), query.Query)
+	if err != nil {
+		panic("failed to load cache from the database")
+	}
+
+	if cached != nil {
+		log.Debug(fmt.Sprintf("found result in cache for query \"%s\"", query.Query))
+		return c.JSON(http.StatusOK, cached)
+	}
+
 	table, err := q.queryToJson(query.Query)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	log.Info(fmt.Sprintf("query \"%s\" executed", query.Query))
+
+	status, err := q.cache.Create(context.Background(), query.Query, table)
+	if err != nil {
+		panic("failed to write result into the database")
+	}
+	if status {
+		log.Debug(fmt.Sprintf("successfully written found result into the cache for query \"%s\"", query.Query))
+	} else {
+		log.Debug(fmt.Sprintf("failed to write found result into the cache for query \"%s\"", query.Query))
+	}
+
 	return c.JSON(http.StatusOK, table)
 }
 
