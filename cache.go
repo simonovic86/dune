@@ -56,7 +56,7 @@ func (cache *Cache) Find(c context.Context, q string) ([]map[string]interface{},
 func (cache *Cache) Create(c context.Context, q string, entry []map[string]interface{}) (bool, error) {
 	ctx, cancel := context.WithTimeout(c, time.Duration(2*time.Second))
 	defer cancel()
-	// entry []map[string]interface{}
+
 	raw, err := json.Marshal(entry)
 	if err != nil {
 		return false, err
