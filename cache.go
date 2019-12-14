@@ -30,7 +30,7 @@ func (cache *Cache) Find(c context.Context, q string) ([]map[string]interface{},
 	var createdAt time.Time
 	var entry []byte
 
-	row := cache.db.QueryRowContext(ctx, "SELECT id, query, result, created_at FROM cache WHERE query = $1", normalizedQuery)
+	row := cache.db.QueryRowContext(ctx, "SELECT id, query, result, created_at FROM cache WHERE query = $1 ORDER BY id DESC", normalizedQuery)
 	switch err := row.Scan(&id, &query, &entry, &createdAt); err {
 	case sql.ErrNoRows:
 		return nil, nil
