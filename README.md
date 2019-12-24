@@ -1,5 +1,5 @@
 # Basic Query Executor 
-In few words, Query Executor runs SELECT queries on top of the PostgreSQL database, specifically BLOCKS table.
+In few words, Query Executor runs arbitrary SELECT queries on top of the PostgreSQL database, specifically BLOCKS table.
 
 The structure of the BLOCKS table is the following:
 
